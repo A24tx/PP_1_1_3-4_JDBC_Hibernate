@@ -25,8 +25,9 @@ public class UserDaoJDBCImpl implements UserDao {
                         """;
         try {
             con.execute(query);
+            System.out.println("Таблица users создана");
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
@@ -35,8 +36,9 @@ public class UserDaoJDBCImpl implements UserDao {
 
         try {
             con.execute(query);
+            System.out.println("Таблица users удалена");
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
@@ -45,24 +47,27 @@ public class UserDaoJDBCImpl implements UserDao {
                 "VALUES(null,'"+ name + "','" + lastName + "'," + age + ");";
         try {
             con.executeUpdate(query);
+            System.out.println("User с именем ".concat(name).concat(" добавлен в базу данных"));
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
     public void removeUserById(long id) {
-        String query = "DELETE FROM users" + " WHERE id = " + String.valueOf(id)+ ";";
+        String query = "DELETE FROM users WHERE id = " + String.valueOf(id)+ ";";
         try {
             con.execute(query);
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
+
         try {
             ResultSet results = con.executeQuery("SELECT * FROM users;");
+
             while (results.next()) {
                 String name = results.getString("name");
                 String lastname = results.getString("lastname");
@@ -72,10 +77,11 @@ public class UserDaoJDBCImpl implements UserDao {
                 User u = new User(name, lastname, age);
                 u.setId(id);
                 users.add(u);
-                System.out.println("Users added total: "+users.size());
+
+                System.out.println("DB: user - ".concat(u.toString()));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
 
         return users;
@@ -84,8 +90,9 @@ public class UserDaoJDBCImpl implements UserDao {
     public void cleanUsersTable() {
         try {
             con.executeUpdate("DELETE FROM users;");
+            System.out.println("Таблица users очищена");
         } catch(Exception e ) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 }

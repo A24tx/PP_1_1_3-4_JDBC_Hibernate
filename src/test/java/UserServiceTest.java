@@ -98,7 +98,7 @@ public class UserServiceTest {
             Assert.fail("При тестировании очистки таблицы пользователей произошло исключение\n" + e);
         }
     }
-    @Test
+    /** @Test
     public void myTest() {
         try {
             userService.dropUsersTable();
@@ -117,6 +117,6 @@ public class UserServiceTest {
             Assert.fail("test failed! dumbass");
         }
 
-    }
+    } */
 
 }
