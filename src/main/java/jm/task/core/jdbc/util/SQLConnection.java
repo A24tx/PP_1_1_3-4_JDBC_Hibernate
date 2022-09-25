@@ -1,4 +1,4 @@
-package jm.task.core.jdbc.service;
+package jm.task.core.jdbc.util;
 
 import java.sql.*;
 
@@ -11,7 +11,7 @@ public class SQLConnection {
     private Connection connection;
     private static SQLConnection instance = new SQLConnection();
 
-    public static SQLConnection getInstance() {
+    protected static SQLConnection getInstance() {
         return instance;
     }
 
@@ -54,21 +54,30 @@ public class SQLConnection {
 
     // методы изменения параметров работы с DB
 
-    public void setUsername(String username) {
+    protected void setUsername(String username) {
         USERNAME = username;
     }
-    public void setPassword(String psw) {
+    protected void setPassword(String psw) {
         PASSWORD = psw;
     }
-    public void setUrl(String url) {
+    protected void setUrl(String url) {
         URL = url;
     }
 
-    public void newConnection() throws SQLException {
+    protected void newConnection() {
         try {
+            connection.close();
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            //
+        }
+    }
+    protected void closeConnection() {
+        try {
+            connection.close();
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        } catch (Exception e) {
+            //
         }
     }
 

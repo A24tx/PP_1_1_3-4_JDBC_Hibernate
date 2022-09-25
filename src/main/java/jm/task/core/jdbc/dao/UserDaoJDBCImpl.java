@@ -1,7 +1,8 @@
 package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
-import jm.task.core.jdbc.service.SQLConnection;
+import jm.task.core.jdbc.util.SQLConnection;
+import jm.task.core.jdbc.util.Util;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.List;
 public class UserDaoJDBCImpl implements UserDao {
     private SQLConnection con;
     public UserDaoJDBCImpl() {
-        con = SQLConnection.getInstance();
+        con = Util.getInstance().getSQLConnection();
     }
 
     public void createUsersTable() {

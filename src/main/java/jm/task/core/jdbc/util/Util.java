@@ -1,19 +1,39 @@
 package jm.task.core.jdbc.util;
 
-import jm.task.core.jdbc.service.SQLConnection;
-
 import java.sql.SQLException;
 
+//Singleton
 public class Util {
-    public static SQLConnection configureConnection(SQLConnection con, String username, String psw, String link) {
-        try {
-            con.setUsername(username);
-            con.setPassword(psw);
-            con.setUrl(link);
-            con.newConnection();
-            return con;
-        } catch (SQLException e) {
-            return con;
+    SQLConnection connection;
+    private static Util instance = new Util();
+
+    private Util() {
+        //
+    }
+
+    public SQLConnection getSQLConnection() {
+        if (connection == null) {
+            connection = SQLConnection.getInstance();
         }
+        return connection;
+    }
+
+    public static Util getInstance() {
+        return instance;
+    }
+
+    public void configureConnection(String username, String psw, String link) {
+        try {
+            connection.setUsername(username);
+            connection.setPassword(psw);
+            connection.setUrl(link);
+            connection.newConnection();
+        } catch (Exception e) {
+            //
+        }
+    }
+
+    public void closeConnection() {
+        connection.closeConnection();
     }
 }
