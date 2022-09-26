@@ -7,8 +7,6 @@ import org.junit.Test;
 
 import java.util.List;
 
-// !!!! РЕАЛИЗАЦИЯ КЛАССОВ ПОД ДАННЫЕ ТЕСТЫ НЕ ВЫПОЛНЕНА !!!! //
-
 
 public class HibernateTest {
     private UserService userService = new UserServiceImpl(new UserDaoHibernateImpl());
@@ -102,22 +100,6 @@ public class HibernateTest {
         }
     }
 
-    @Test
-    public void testTableDropping () {
-        try {
-            userService.saveUser(testName, testLastName, testAge);
-            userService.saveUser(testName, testLastName, testAge);
-            userService.saveUser(testName, testLastName, testAge);
-            userService.dropUsersTable();
 
-            userService.createUsersTable();
-            List<User> l = userService.getAllUsers();
-            Assert.assertEquals(true, l.size() == 0);
-        } catch (Exception e) {
-            Assert.fail("Dropping table failed");
-        }
-
-
-    }
 
 }

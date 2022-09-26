@@ -3,10 +3,8 @@ package jm.task.core.jdbc.dao;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.HibernateConnection;
 import jm.task.core.jdbc.util.HibernateUtil;
-import org.hibernate.HibernateException;
-import java.util.ArrayList;
 import java.util.List;
-// !!!! РЕАЛИЗАЦИЯ ДАННОГО КЛАССА НЕ ВЫПОЛНЕНА !!!! //
+
 
 public class UserDaoHibernateImpl implements UserDao {
     private HibernateConnection connection;
@@ -33,13 +31,12 @@ public class UserDaoHibernateImpl implements UserDao {
     public void saveUser(String name, String lastName, byte age) {
         User u = new User(name, lastName, age);
 
-        connection.saveObject(u);
+        connection.saveUser(u);
     }
 
     @Override
     public void removeUserById(long id) {
-        //TODO: rewrite without query language
-        connection.execute("delete from User where ID=" + String.valueOf(id));
+        connection.deleteUserById(id);
     }
 
     @Override

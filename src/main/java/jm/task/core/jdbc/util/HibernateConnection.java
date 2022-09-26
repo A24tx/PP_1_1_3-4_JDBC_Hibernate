@@ -1,7 +1,6 @@
 package jm.task.core.jdbc.util;
 
 import jm.task.core.jdbc.model.User;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -9,10 +8,8 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.transaction.TransactionScoped;
 import java.util.List;
 
-// !!!! РЕАЛИЗАЦИЯ ДАННОГО КЛАССА НЕ ВЫПОЛНЕНА !!!! //
 
 public class HibernateConnection {
     private SessionFactory sessionFactory;
@@ -22,19 +19,30 @@ public class HibernateConnection {
         this.sessionFactory = sf;
     }
 
-    public void saveObject(User object) {
+    public void saveUser(User user) {
         try (Session session = sessionFactory.getCurrentSession()) {
 
             Transaction t = session.beginTransaction();
-            session.save(object);
+            session.save(user);
 
             t.commit();
         } catch (Exception e) {
-            System.out.println("Saving object failed: "+object.toString());
+            System.out.println("Saving object failed: "+user.toString());
             e.printStackTrace();
         }
     }
-
+    public void deleteUserById(Long id) {
+        try (Session session = sessionFactory.getCurrentSession()) {
+            Transaction t = session.beginTransaction();
+            User instance = new User();
+            instance.setId(id);
+            session.delete((Object) instance);
+            t.commit();
+        } catch (Exception e) {
+            System.out.println("Failed deleting user by id "+id);
+            e.printStackTrace();
+        }
+    }
     public void execute(String query)  {
         try (Session session = sessionFactory.getCurrentSession()) {
             Transaction t = session.beginTransaction();
@@ -45,13 +53,12 @@ public class HibernateConnection {
             e.printStackTrace();
         }
     }
-    // lazy implementation
+
     public void clearUsersTable()  {
         List<User> list = this.getUsers();
 
         try  (Session session = sessionFactory.getCurrentSession()) {
 
-            //TODO: rewrite with proper table clearing
             Transaction ts = session.beginTransaction();
             for (User u : list) {
                 session.delete(u);
@@ -68,7 +75,6 @@ public class HibernateConnection {
         List<User> list = null;
 
         try (Session session = sessionFactory.getCurrentSession()) {
-            // Criteria API
             Transaction t = session.beginTransaction();
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<User> cq = cb.createQuery(User.class);

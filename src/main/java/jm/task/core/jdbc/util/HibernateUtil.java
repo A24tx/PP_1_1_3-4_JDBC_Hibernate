@@ -2,8 +2,6 @@ package jm.task.core.jdbc.util;
 
 import java.util.Properties;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -12,12 +10,11 @@ import org.hibernate.service.ServiceRegistry;
 import jm.task.core.jdbc.model.User;
 
 
-// !!!! РЕАЛИЗАЦИЯ ДАННОГО КЛАССА НЕ ВЫПОЛНЕНА !!!! //
 
 public class HibernateUtil {
     private static SessionFactory sessionFactory;
 
-    private static String DRIVER = "com.mysql.cj.jdbc.Driver";   // used to be mysql.jdbc
+    private static String DRIVER = "com.mysql.cj.jdbc.Driver";   // legacy -- mysql.jdbc
     private static String URL = "jdbc:mysql://localhost:3306/mysql";
     private static String USER = "root";
     private static String PASS = "root";
