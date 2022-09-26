@@ -98,25 +98,5 @@ public class UserServiceTest {
             Assert.fail("При тестировании очистки таблицы пользователей произошло исключение\n" + e);
         }
     }
-    /** @Test
-    public void myTest() {
-        try {
-            userService.dropUsersTable();
-            userService.createUsersTable();
-            userService.saveUser("1", "1", (byte) 11);
-            userService.saveUser("2", "2", (byte) 21);
-            userService.saveUser("3", "3", (byte) 31);
-
-            List<User> userList = userService.getAllUsers();
-
-            if(userList.size() != 3) {
-                Assert.fail("expected 3 users to be in the table, got: "+userList.size());
-            }
-
-        } catch (Exception e) {
-            Assert.fail("test failed! dumbass");
-        }
-
-    } */
 
 }

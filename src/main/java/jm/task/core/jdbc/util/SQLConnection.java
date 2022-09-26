@@ -1,6 +1,10 @@
 package jm.task.core.jdbc.util;
 
+import jm.task.core.jdbc.model.User;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 // Singleton
 public class SQLConnection {
@@ -8,7 +12,6 @@ public class SQLConnection {
     private String USERNAME = "root";
     private String PASSWORD = "root";
     private String URL = "jdbc:mysql://localhost:3306/mysql";
-    private Connection connection;
     private static SQLConnection instance = new SQLConnection();
 
     protected static SQLConnection getInstance() {
@@ -16,39 +19,44 @@ public class SQLConnection {
     }
 
     private SQLConnection() {
-        try {
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        //
     }
 
-    public ResultSet executeQuery(String query) throws SQLException {
-        ResultSet results = null;
+    public List<User> fetchUsers()  {
+        List<User> list = new ArrayList<>();
 
-        try  {
-            Statement statement = connection.createStatement();
-            results = statement.executeQuery(query);
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM Users;");
+            ResultSet results = ps.executeQuery();
+
+            while(results.next()) {
+                User u = new User(results.getString("name"), results.getString("lastname"), results.getByte("age"));
+                u.setId(results.getLong("id"));
+                list.add(u);
+            }
         } catch (Exception e) {
-            throw new SQLException(e);
+            System.out.println("Не получилось получить пользователей из базы данных");
+            e.printStackTrace();
         }
 
-        return results;
+        return list;
     }
-    public boolean execute(String statement) throws SQLException {
-        try {
-            Statement s = connection.createStatement();
-            return s.execute(statement);
+    public void execute(String statement) {
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            PreparedStatement ps = connection.prepareStatement(statement);
+            ps.execute(statement);
         } catch (Exception e) {
-            throw new SQLException(e);
+            System.out.println("Не получилось выполнить: "+statement);
+            e.printStackTrace();
         }
     }
-    public void executeUpdate(String statement) throws SQLException {
-        try {
-            Statement s = connection.createStatement();
-            s.executeUpdate(statement);
+    public void executeUpdate(String statement) {
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            PreparedStatement ps = connection.prepareStatement(statement);
+            ps.executeUpdate(statement);
         } catch (Exception e) {
-            throw new SQLException(e);
+            System.out.println("Не получилось выполнить обновление: "+statement);
+            e.printStackTrace();
         }
     }
 
@@ -64,21 +72,5 @@ public class SQLConnection {
         URL = url;
     }
 
-    protected void newConnection() {
-        try {
-            connection.close();
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (Exception e) {
-            //
-        }
-    }
-    protected void closeConnection() {
-        try {
-            connection.close();
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (Exception e) {
-            //
-        }
-    }
 
 }

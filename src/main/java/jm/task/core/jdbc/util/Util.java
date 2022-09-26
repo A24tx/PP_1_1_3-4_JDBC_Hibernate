@@ -27,13 +27,9 @@ public class Util {
             connection.setUsername(username);
             connection.setPassword(psw);
             connection.setUrl(link);
-            connection.newConnection();
         } catch (Exception e) {
             //
         }
     }
 
-    public void closeConnection() {
-        connection.closeConnection();
-    }
 }

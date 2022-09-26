@@ -2,9 +2,14 @@ package jm.task.core.jdbc.model;
 
 import javax.persistence.*;
 
-@Table
+@Entity
+@Table(name="Users")
 public class User {
     @Id
+    @Column(name = "ID", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long ID;
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
@@ -34,6 +39,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setID(Long id) {
+        this.ID = id;
+    }
+
+    public Long getID() {
+        return ID;
     }
 
     public String getName() {

@@ -14,6 +14,9 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl() {
         implementation = new UserDaoJDBCImpl();
     }
+    public UserServiceImpl(UserDao implementation) {
+        this.implementation = implementation;
+    }
 
 
     public void createUsersTable() {
