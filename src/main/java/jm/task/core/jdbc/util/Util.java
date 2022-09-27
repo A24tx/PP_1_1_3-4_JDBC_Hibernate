@@ -1,35 +1,41 @@
 package jm.task.core.jdbc.util;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 //Singleton
 public class Util {
-    SQLConnection connection;
-    private static Util instance = new Util();
+    private static Connection connection;
+    private static String USERNAME = "root";
+    private static String PASSWORD = "root";
+    private static String URL = "jdbc:mysql://localhost:3306/mysql";
 
-    private Util() {
-        //
+    static {
+        try {
+            Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public SQLConnection getSQLConnection() {
-        if (connection == null) {
-            connection = SQLConnection.getInstance();
+    public static Connection getNewConnection() {
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        } catch (Exception e) {
+            System.out.println("Failed to establish a new connection, using old one");
         }
         return connection;
     }
 
-    public static Util getInstance() {
-        return instance;
+    public static Connection getConnection() {
+        return connection;
     }
 
-    public void configureConnection(String username, String psw, String link) {
-        try {
-            connection.setUsername(username);
-            connection.setPassword(psw);
-            connection.setUrl(link);
-        } catch (Exception e) {
-            //
-        }
+    public static void configureConnection(String username, String psw, String link) {
+        USERNAME = username;
+        PASSWORD = psw;
+        URL = link;
     }
 
 }
