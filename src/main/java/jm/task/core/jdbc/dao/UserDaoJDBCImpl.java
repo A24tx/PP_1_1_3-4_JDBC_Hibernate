@@ -22,24 +22,61 @@ public class UserDaoJDBCImpl implements UserDao {
                     KEY (id)
                 );
                 """;
-        execute(query);
+
+        try (Connection connection = Util.getNewConnection()) {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.execute();
+        } catch (Exception e) {
+            System.out.println("Не получилось создать таблицу : ");
+            e.printStackTrace();
+        }
     }
 
     public void dropUsersTable() {
-        execute("DROP TABLE IF EXISTS Users;");
+        String query = "DROP TABLE IF EXISTS Users;";
+        try (Connection connection = Util.getNewConnection()) {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.execute();
+        } catch (Exception e) {
+            System.out.println("Не получилось удалить таблицу");
+            e.printStackTrace();
+        }
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        executeUpdate("INSERT INTO Users " +
-                "VALUES(null,'" + name + "','" + lastName + "'," + age + ");");
+
+        String query = "INSERT INTO Users " +
+                "VALUES(null,'" + name + "','" + lastName + "'," + age + ");";
+
+        try (Connection connection = Util.getNewConnection()) {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Не получилось сохранить пользователя " + query);
+            e.printStackTrace();
+        }
     }
 
     public void removeUserById(long id) {
-        execute("DELETE FROM users WHERE id = " + String.valueOf(id) + ";");
+        String query = "DELETE FROM users WHERE id = " + String.valueOf(id) + ";";
+        try (Connection connection = Util.getNewConnection()) {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.execute();
+        } catch (Exception e) {
+            System.out.println("Не получилось удалить пользователя по ID");
+            e.printStackTrace();
+        }
     }
 
     public void cleanUsersTable() {
-        executeUpdate("DELETE FROM Users;");
+        String query = "DELETE FROM Users;";
+        try (Connection connection = Util.getNewConnection()) {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Не получилось очистить таблицу ");
+            e.printStackTrace();
+        }
     }
 
     public List<User> getAllUsers() {
@@ -60,26 +97,5 @@ public class UserDaoJDBCImpl implements UserDao {
         }
 
         return list;
-    }
-
-
-    private void executeUpdate(String query) {
-        try (Connection connection = Util.getNewConnection()) {
-            PreparedStatement ps = connection.prepareStatement(query);
-            ps.executeUpdate();
-        } catch (Exception e) {
-            System.out.println("Не получилось выполнить обновление: " + query);
-            e.printStackTrace();
-        }
-    }
-
-    private void execute(String query) {
-        try (Connection connection = Util.getNewConnection()) {
-            PreparedStatement ps = connection.prepareStatement(query);
-            ps.execute();
-        } catch (Exception e) {
-            System.out.println("Не получилось выполнить : " + query);
-            e.printStackTrace();
-        }
     }
 }
