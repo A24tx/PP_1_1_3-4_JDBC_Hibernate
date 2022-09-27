@@ -10,7 +10,6 @@ import org.hibernate.service.ServiceRegistry;
 import jm.task.core.jdbc.model.User;
 
 
-
 public class HibernateUtil {
     private static SessionFactory sessionFactory;
 
@@ -19,10 +18,6 @@ public class HibernateUtil {
     private static String USER = "root";
     private static String PASS = "root";
 
-
-    private HibernateUtil() {
-        //
-    }
     public void configureConnection(String url, String user, String psw) {
         URL = url;
         USER = user;
@@ -30,7 +25,7 @@ public class HibernateUtil {
         sessionFactory = getSessionFactory();
     }
 
-    protected static SessionFactory getSessionFactory() {
+    public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             try {
                 Configuration configuration = new Configuration();
@@ -62,10 +57,5 @@ public class HibernateUtil {
         }
         return sessionFactory;
     }
-    public static HibernateConnection getHibernateConnection () {
-        return new HibernateConnection(getSessionFactory());
-    }
-
-
 
 }
