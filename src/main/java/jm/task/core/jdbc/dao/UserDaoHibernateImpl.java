@@ -2,7 +2,6 @@ package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.HibernateUtil;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -27,7 +26,6 @@ public class UserDaoHibernateImpl implements UserDao {
 
         try (Session session = sessionFactory.getCurrentSession()) {
             session.beginTransaction();
-            //! SQLQuery устарел
             session.createSQLQuery("CREATE TABLE Users");
             session.flush();
         } catch (Exception e) {
@@ -43,7 +41,6 @@ public class UserDaoHibernateImpl implements UserDao {
 
         try (Session session = sessionFactory.getCurrentSession()) {
             session.beginTransaction();
-            //! SQLQuery устарел
             session.createSQLQuery("DROP TABLE IF EXISTS Users");
             session.flush();
         } catch (Exception e) {
@@ -107,13 +104,10 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void cleanUsersTable() {
-        List<User> list = getAllUsers();
 
         try (Session session = sessionFactory.getCurrentSession()) {
             Transaction t = session.beginTransaction();
-            for (User u : list) {
-                session.remove(u);
-            }
+            session.createSQLQuery("TRUNCATE TABLE Users").executeUpdate();
             session.flush();
         } catch (Exception e) {
             System.out.println("Не удалось очистить таблицу Users");

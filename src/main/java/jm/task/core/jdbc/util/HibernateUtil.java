@@ -12,7 +12,6 @@ import jm.task.core.jdbc.model.User;
 
 public class HibernateUtil {
     private static SessionFactory sessionFactory;
-
     private static String DRIVER = "com.mysql.cj.jdbc.Driver";   // legacy -- mysql.jdbc
     private static String URL = "jdbc:mysql://localhost:3306/mysql";
     private static String USER = "root";
@@ -26,7 +25,7 @@ public class HibernateUtil {
     }
 
     public static SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
+        if (sessionFactory == null || sessionFactory.isClosed()) {
             try {
                 Configuration configuration = new Configuration();
 
@@ -57,5 +56,6 @@ public class HibernateUtil {
         }
         return sessionFactory;
     }
+
 
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 
 public class HibernateTest {
-    private UserService userService = new UserServiceImpl(new UserDaoHibernateImpl());
+    private UserService userService = new UserServiceImpl();
 
     private final String testName = "Ivan";
     private final String testLastName = "Ivanov";

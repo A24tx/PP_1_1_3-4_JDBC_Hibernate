@@ -10,12 +10,8 @@ public class UserServiceImpl implements UserService {
     private UserDao implementation;
 
     public UserServiceImpl() {
-        implementation = new UserDaoHibernateImpl();
+        this.implementation = new UserDaoHibernateImpl();
     }
-    public UserServiceImpl(UserDao implementation) {
-        this.implementation = implementation;
-    }
-
 
     public void createUsersTable() {
         implementation.createUsersTable();
